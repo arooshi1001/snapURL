@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+  <title>URL Shortener</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="containers"></div>
+
+  <div class="container">
+    <h1 class="title">SnapURL</h1>
+<p class="subtitle">Short links. Long impact.</p>
+
+
+    <form action="/shorten" method="POST">
+      <input type="url" name="fullUrl" placeholder="Paste your long link here..." required>
+      <button type="submit">Shorten</button>
+    </form>
+
+    <table>
+      <tr>
+        <th>Original URL</th>
+        <th>Short URL</th>
+        <th>Clicks</th>
+      </tr>
+
+      <% urls.forEach(url => { %>
+     <tr>
+  <td>
+    <a href="<%= url.fullUrl %>" target="_blank">
+      <%= url.fullUrl %>
+    </a>
+  </td>
+
+  <td class="short-url-cell">
+    <a
+      href="<%= baseUrl %>/<%= url.shortCode %>"
+      target="_blank"
+      class="short-link"
+    >
+      <%= baseUrl %>/<%= url.shortCode %>
+    </a>
+
+    <button
+      class="copy-btn"
+      onclick="copyToClipboard('<%= baseUrl %>/<%= url.shortCode %>')"
+    >
+      📋
+    </button>
+  </td>
+
+  <td>
+    <%= url.clicks %>
+  </td>
+</tr>
+
+      <% }) %>
+    </table>
+  </div>
+  <div id="toast" class="toast">Copied to clipboard!</div>
+
+<script>
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const toast = document.getElementById('toast')
+      toast.classList.add('show')
+
+      setTimeout(() => {
+        toast.classList.remove('show')
+      }, 2000)
+    })
+  }
+</script>
+
+</body>
+</html>
